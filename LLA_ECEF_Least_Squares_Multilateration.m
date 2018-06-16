@@ -45,7 +45,8 @@ function minxHat = MinEst(RefLocations, Ranges, Maxiter, TolX, DispOpt)
     
     xHat = (transpose(H)*H)\(transpose(H)*b); 
     Est = [xHat(2,1) xHat(3,1) xHat(4,1)];
-
+    
+    %if using fmin with out constraints
     if DispOpt
         options = optimset('PlotFcns',@optimplotfval,'MaxIter',Maxiter,'TolX',TolX);
     else
@@ -57,6 +58,7 @@ function minxHat = MinEst(RefLocations, Ranges, Maxiter, TolX, DispOpt)
 
     A = []; b = []; Aeq = []; beq = [];
     
+    %if using with out constratins, uncomment fminsearch and comment fmincon
     %minxHat = fminsearch(@three_var,Est,options);
     minxHat = fmincon(@three_var,Est,A,b,Aeq,beq,lb,ub);
     function e = three_var(Est)
